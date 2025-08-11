@@ -1,0 +1,6 @@
+{
+  "name": "Darlbit Voca-Monster",
+  "description": "Analyze any English text to identify and learn challenging vocabulary. Powered by the Gemini API.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}

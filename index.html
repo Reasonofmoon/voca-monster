@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vocabulary Builder</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Kosugi&display=swap" rel="stylesheet">
+    <style>
+      @keyframes blink {
+        from, to { opacity: 1 }
+        50% { opacity: 0; }
+      }
+      @keyframes pulse {
+        0% { transform: scale(1); opacity: 0.5; }
+        50% { transform: scale(1.05); opacity: 1; }
+        100% { transform: scale(1); opacity: 0.5; }
+      }
+
+      body {
+        background-color: #fcfcfc;
+        color: #1a1a1a;
+        font-family: 'Inter', sans-serif;
+        font-size: 1.1rem;
+        line-height: 1.7;
+        margin: 0;
+        padding: 2rem 2rem 5rem 2rem;
+      }
+      #root {
+        max-width: 70ch; /* Optimal line length for readability */
+        margin: auto;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-size: 1em;
+        margin: 0;
+        font-weight: normal;
+      }
+      h1, h2, h3 {
+        font-weight: bold;
+      }
+      button {
+        background: none;
+        border: none;
+        padding: 0;
+        font: inherit;
+        color: inherit;
+        cursor: pointer;
+      }
+
+      /* == Component Styles == */
+      .input-container {
+        margin-bottom: 2rem;
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        background-color: #fff;
+      }
+      .input-textarea {
+        width: 100%;
+        min-height: 150px;
+        border: none;
+        outline: none;
+        font: inherit;
+        resize: vertical;
+        background-color: transparent;
+      }
+      .input-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 0.5rem;
+      }
+      .action-button, .worksheet-button {
+        background-color: #1a1a1a;
+        color: #fff;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-weight: bold;
+        transition: background-color 0.2s;
+        text-align: center;
+      }
+      .action-button:hover:not(:disabled), .worksheet-button:hover:not(:disabled) {
+        background-color: #0000ff;
+      }
+      .action-button:disabled, .worksheet-button:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+      .back-button {
+        display: inline-block;
+        margin-bottom: 2rem;
+        font-weight: bold;
+      }
+      .back-button:hover {
+        text-decoration: underline;
+      }
+      .highlighted-word {
+        background-color: #e6e6fa; /* Light Lavender */
+        border-radius: 4px;
+        font-weight: bold;
+        padding: 0.1em 0.2em;
+        margin: -0.1em -0.2em;
+        transition: background-color 0.2s ease-in-out;
+      }
+      .highlighted-word:hover {
+        background-color: #d8b4fe; /* Lavender */
+      }
+      .vocabulary-section {
+        margin-top: 3rem;
+        border-top: 1px solid #e0e0e0;
+        padding-top: 2rem;
+      }
+      .vocabulary-list {
+        list-style-type: decimal;
+        padding-left: 0;
+        list-style-position: inside;
+      }
+      .vocabulary-list li {
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+      }
+      .vocabulary-list li input[type="checkbox"] {
+        margin-right: 0.75rem;
+        width: 1.2rem;
+        height: 1.2rem;
+      }
+      .vocabulary-list li button:hover {
+        text-decoration: underline;
+        color: #0000ff;
+      }
+      .worksheet-button-container {
+        margin-top: 2rem;
+        text-align: center;
+      }
+      
+      /* == Worksheet Styles == */
+      .worksheet-container {
+        padding: 2rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background-color: #fff;
+      }
+      .worksheet-header {
+        text-align: center;
+        margin-bottom: 2.5rem;
+        border-bottom: 2px solid #333;
+        padding-bottom: 1rem;
+      }
+      .worksheet-header h1 {
+        font-size: 2rem;
+      }
+      .worksheet-section {
+        margin-bottom: 2.5rem;
+      }
+      .worksheet-section h2 {
+        font-size: 1.5rem;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 0.5rem;
+        margin-bottom: 1rem;
+      }
+      .keywords-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0;
+        margin: 0;
+        list-style: none;
+      }
+      .keywords-list li {
+        background-color: #f0f0f0;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.9rem;
+      }
+      .word-detail-list, .test-list {
+        list-style: none;
+        padding: 0;
+      }
+      .word-detail-item, .test-item {
+        margin-bottom: 1.5rem;
+      }
+      .word-detail-item strong {
+        font-size: 1.2rem;
+      }
+      .test-item p {
+        margin: 0.25rem 0;
+      }
+      .answer-key {
+        background-color: #f9f9f9;
+        border: 1px dashed #ccc;
+        padding: 1.5rem;
+        border-radius: 8px;
+      }
+
+      /* Print specific styles */
+      @media print {
+        body {
+          padding: 0;
+          font-size: 10pt;
+        }
+        #root {
+          max-width: 100%;
+        }
+        .no-print {
+          display: none !important;
+        }
+        .worksheet-container {
+          border: none;
+          box-shadow: none;
+        }
+      }
+      
+      /* == Utility Styles == */
+      .ascii-art {
+        font-family: 'Kosugi', monospace;
+        text-align: left;
+        white-space: pre;
+        color: #888;
+        margin: 2rem 0;
+        line-height: 1.1;
+        font-size: 0.8em;
+      }
+      .blinking-cursor {
+        animation: blink 1s step-end infinite;
+      }
+      .sticky-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        text-align: center;
+        padding: 1.5rem 0;
+        background-color: #fcfcfc;
+        border-top: 1px solid #e0e0e0;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.1.0/",
+    "react": "https://esm.sh/react@^19.1.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.1.0/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.7.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
