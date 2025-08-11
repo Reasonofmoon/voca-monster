@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(npm install)",
+      "Bash(rm:*)",
+      "Bash(gh run list:*)",
+      "WebFetch(domain:reasonofmoon.github.io)"
+    ],
+    "deny": []
+  }
+}
