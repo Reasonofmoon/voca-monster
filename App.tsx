@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { streamDefinition, generateAsciiArt, analyzeTextForVocabulary, generateWorksheetData, setApiKey, AsciiArtData, WorksheetData } from './services/geminiService';
 import ContentDisplay from './components/ContentDisplay';
 import InputArea from './components/SearchBar';
@@ -63,19 +63,28 @@ interface AnalyzedContentProps {
   onWordClick: (word: string) => void;
 }
 
-const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords, onWordClick }) => {
+const AnalyzedContent: React.FC<AnalyzedContentProps> = React.memo(({ text, highlightWords, onWordClick }) => {
   if (highlightWords.length === 0) {
     return <p className="whitespace-pre-wrap">{text}</p>;
   }
   
-  const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
-  const parts = text.split(regex);
+  // Memoize the set for O(1) lookup
+  const highlightSet = useMemo(() => {
+    return new Set(highlightWords.map(w => w.toLowerCase()));
+  }, [highlightWords]);
+
+  // Memoize the parts splitting to avoid regex recompilation and splitting on every render
+  const parts = useMemo(() => {
+    const escapedWords = highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
+    const regex = new RegExp(`\\b(${escapedWords.join('|')})\\b`, 'gi');
+    return text.split(regex);
+  }, [text, highlightWords]);
 
   return (
     <p className="whitespace-pre-wrap">
       {parts.map((part, index) => {
-        const isHighlight = highlightWords.some(hWord => hWord.toLowerCase() === part.toLowerCase());
-        if (isHighlight) {
+        // Fast lookup using Set
+        if (highlightSet.has(part.toLowerCase())) {
           return (
             <button key={index} onClick={() => onWordClick(part)} className="bg-yellow-200 hover:bg-yellow-300 text-black font-bold py-1 px-2 rounded-md transition-colors duration-200">
               {part}
@@ -86,7 +95,7 @@ const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords,
       })}
     </p>
   );
-};
+});
 
 
 interface VocabularyListProps {
