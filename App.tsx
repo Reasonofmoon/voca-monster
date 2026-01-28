@@ -63,13 +63,15 @@ interface AnalyzedContentProps {
   onWordClick: (word: string) => void;
 }
 
-const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords, onWordClick }) => {
-  if (highlightWords.length === 0) {
-    return <p className="whitespace-pre-wrap">{text}</p>;
-  }
-  
-  const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
-  const parts = text.split(regex);
+const AnalyzedContent: React.FC<AnalyzedContentProps> = React.memo(({ text, highlightWords, onWordClick }) => {
+  // Memoize the expensive text splitting logic to prevent re-calculation on every render
+  const parts = React.useMemo(() => {
+    if (highlightWords.length === 0) {
+      return [text];
+    }
+    const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
+    return text.split(regex);
+  }, [text, highlightWords]);
 
   return (
     <p className="whitespace-pre-wrap">
@@ -86,7 +88,7 @@ const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords,
       })}
     </p>
   );
-};
+});
 
 
 interface VocabularyListProps {
