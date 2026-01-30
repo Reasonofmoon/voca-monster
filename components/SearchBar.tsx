@@ -138,4 +138,6 @@ const InputArea: React.FC<InputAreaProps> = ({ onAnalyze, onRandom, onClear, isL
   );
 };
 
-export default InputArea;
+// Optimized with React.memo to prevent re-renders when parent state (like progress) changes
+// but input props remain stable.
+export default React.memo(InputArea);

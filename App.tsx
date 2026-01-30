@@ -63,7 +63,9 @@ interface AnalyzedContentProps {
   onWordClick: (word: string) => void;
 }
 
-const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords, onWordClick }) => {
+// Optimized with React.memo to prevent expensive regex construction and text splitting
+// on every parent re-render (e.g., during progress updates).
+const AnalyzedContent = React.memo<AnalyzedContentProps>(({ text, highlightWords, onWordClick }) => {
   if (highlightWords.length === 0) {
     return <p className="whitespace-pre-wrap">{text}</p>;
   }
@@ -86,7 +88,7 @@ const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords,
       })}
     </p>
   );
-};
+});
 
 
 interface VocabularyListProps {
@@ -96,7 +98,9 @@ interface VocabularyListProps {
   onSelectionChange: (word: string) => void;
 }
 
-const VocabularyList: React.FC<VocabularyListProps> = ({ words, selectedWords, onWordClick, onSelectionChange }) => {
+// Optimized with React.memo to prevent unnecessary re-renders of the list
+// when unrelated parent state changes.
+const VocabularyList = React.memo<VocabularyListProps>(({ words, selectedWords, onWordClick, onSelectionChange }) => {
   if (words.length === 0) return null;
 
   return (
@@ -122,7 +126,7 @@ const VocabularyList: React.FC<VocabularyListProps> = ({ words, selectedWords, o
       </ol>
     </div>
   );
-};
+});
 
 
 // == Main App Component ==
