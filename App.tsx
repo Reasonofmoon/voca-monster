@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo, memo } from 'react';
 import { streamDefinition, generateAsciiArt, analyzeTextForVocabulary, generateWorksheetData, setApiKey, AsciiArtData, WorksheetData } from './services/geminiService';
 import ContentDisplay from './components/ContentDisplay';
 import InputArea from './components/SearchBar';
@@ -63,13 +63,18 @@ interface AnalyzedContentProps {
   onWordClick: (word: string) => void;
 }
 
-const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords, onWordClick }) => {
-  if (highlightWords.length === 0) {
+const AnalyzedContent: React.FC<AnalyzedContentProps> = memo(({ text, highlightWords, onWordClick }) => {
+  const parts = useMemo(() => {
+    if (highlightWords.length === 0) {
+      return null;
+    }
+    const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
+    return text.split(regex);
+  }, [text, highlightWords]);
+
+  if (highlightWords.length === 0 || !parts) {
     return <p className="whitespace-pre-wrap">{text}</p>;
   }
-  
-  const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
-  const parts = text.split(regex);
 
   return (
     <p className="whitespace-pre-wrap">
@@ -86,7 +91,7 @@ const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords,
       })}
     </p>
   );
-};
+});
 
 
 interface VocabularyListProps {
