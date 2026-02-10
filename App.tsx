@@ -12,6 +12,8 @@ import AsciiArtDisplay from './components/AsciiArtDisplay';
 import WorksheetDisplay from './components/WorksheetDisplay';
 import ApiKeyManager from './components/ApiKeyManager';
 import ProgressTracker from './components/ProgressTracker';
+import AnalyzedContent from './components/AnalyzedContent';
+import VocabularyList from './components/VocabularyList';
 
 const SAMPLE_TOPICS = [ 
   'Quantum Computing and Future Technology', 
@@ -55,74 +57,6 @@ const createFallbackArt = (topic: string): AsciiArtData => {
   return { art: `${topBorder}\n${middle}\n${bottomBorder}` };
 };
 
-// == Sub-Components defined within App.tsx ==
-
-interface AnalyzedContentProps {
-  text: string;
-  highlightWords: string[];
-  onWordClick: (word: string) => void;
-}
-
-const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords, onWordClick }) => {
-  if (highlightWords.length === 0) {
-    return <p className="whitespace-pre-wrap">{text}</p>;
-  }
-  
-  const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
-  const parts = text.split(regex);
-
-  return (
-    <p className="whitespace-pre-wrap">
-      {parts.map((part, index) => {
-        const isHighlight = highlightWords.some(hWord => hWord.toLowerCase() === part.toLowerCase());
-        if (isHighlight) {
-          return (
-            <button key={index} onClick={() => onWordClick(part)} className="bg-yellow-200 hover:bg-yellow-300 text-black font-bold py-1 px-2 rounded-md transition-colors duration-200">
-              {part}
-            </button>
-          );
-        }
-        return <React.Fragment key={index}>{part}</React.Fragment>;
-      })}
-    </p>
-  );
-};
-
-
-interface VocabularyListProps {
-  words: string[];
-  selectedWords: string[];
-  onWordClick: (word: string) => void;
-  onSelectionChange: (word: string) => void;
-}
-
-const VocabularyList: React.FC<VocabularyListProps> = ({ words, selectedWords, onWordClick, onSelectionChange }) => {
-  if (words.length === 0) return null;
-
-  return (
-    <div className="my-4">
-      <h2 className="text-2xl font-bold mb-2">Key Vocabulary (by difficulty)</h2>
-      <p className="text-gray-500 mb-4">Select words to generate a worksheet.</p>
-      <ol className="list-decimal list-inside space-y-2">
-        {words.map((word, index) => (
-          <li key={index} className="flex items-center">
-            <input 
-              type="checkbox"
-              id={`vocab-checkbox-${index}`}
-              checked={selectedWords.includes(word)}
-              onChange={() => onSelectionChange(word)}
-              aria-labelledby={`vocab-label-${index}`}
-              className="mr-2 h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-            />
-            <label htmlFor={`vocab-checkbox-${index}`} id={`vocab-label-${index}`}>
-              <button onClick={() => onWordClick(word)} className="text-indigo-600 hover:underline">{word}</button>
-            </label>
-          </li>
-        ))}
-      </ol>
-    </div>
-  );
-};
 
 
 // == Main App Component ==
