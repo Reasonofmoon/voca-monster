@@ -4,6 +4,9 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   base: '/voca-monster/',
+  define: {
+    'process.env': {}
+  },
   plugins: [react()],
   resolve: {
     alias: {
