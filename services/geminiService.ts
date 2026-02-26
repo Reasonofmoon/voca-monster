@@ -10,8 +10,10 @@ let ai: GoogleGenAI | null = null;
 const modelName = 'gemini-2.5-flash';
 
 // Initialize with environment API key if available
-if (process.env.API_KEY && process.env.API_KEY !== 'PLACEHOLDER_API_KEY') {
-  ai = new GoogleGenAI({apiKey: process.env.API_KEY});
+const envApiKey = (typeof process !== 'undefined' ? process.env?.API_KEY : undefined) || import.meta.env?.VITE_API_KEY;
+
+if (envApiKey && envApiKey !== 'PLACEHOLDER_API_KEY') {
+  ai = new GoogleGenAI({apiKey: envApiKey});
 }
 
 /**
@@ -38,8 +40,9 @@ export function getCurrentApiKey(): string | null {
   }
   
   // Fallback to environment key
-  if (process.env.API_KEY && process.env.API_KEY !== 'PLACEHOLDER_API_KEY') {
-    return process.env.API_KEY;
+  const envApiKey = (typeof process !== 'undefined' ? process.env?.API_KEY : undefined) || import.meta.env?.VITE_API_KEY;
+  if (envApiKey && envApiKey !== 'PLACEHOLDER_API_KEY') {
+    return envApiKey;
   }
   
   return null;
