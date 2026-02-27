@@ -25,7 +25,7 @@ const ApiKeyManager: React.FC<ApiKeyManagerProps> = ({ onApiKeyChange }) => {
       onApiKeyChange(savedKey);
     } else {
       // Check if there's an environment API key
-      if (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'PLACEHOLDER_API_KEY') {
+      if (typeof process !== 'undefined' && process.env && process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'PLACEHOLDER_API_KEY') {
         setIsKeySet(true);
         onApiKeyChange(process.env.GEMINI_API_KEY);
       } else {

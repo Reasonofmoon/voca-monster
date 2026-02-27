@@ -10,7 +10,7 @@ let ai: GoogleGenAI | null = null;
 const modelName = 'gemini-2.5-flash';
 
 // Initialize with environment API key if available
-if (process.env.API_KEY && process.env.API_KEY !== 'PLACEHOLDER_API_KEY') {
+if (typeof process !== 'undefined' && process.env && process.env.API_KEY && process.env.API_KEY !== 'PLACEHOLDER_API_KEY') {
   ai = new GoogleGenAI({apiKey: process.env.API_KEY});
 }
 
@@ -38,7 +38,7 @@ export function getCurrentApiKey(): string | null {
   }
   
   // Fallback to environment key
-  if (process.env.API_KEY && process.env.API_KEY !== 'PLACEHOLDER_API_KEY') {
+  if (typeof process !== 'undefined' && process.env && process.env.API_KEY && process.env.API_KEY !== 'PLACEHOLDER_API_KEY') {
     return process.env.API_KEY;
   }
   
