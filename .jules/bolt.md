@@ -1,0 +1,3 @@
+## 2024-05-17 - [Optimized AnalyzedContent String Matching]
+**Learning:** String splitting with capturing groups (`split(/.../gi)`) guarantees that captured delimiters are always placed at odd indices in the resulting array. This allows transforming an $O(N \times M)$ substring matching check (`Array.prototype.some` over an array of target words for every split chunk) into a simple $O(1)$ index parity check (`index % 2 === 1`).
+**Action:** When building text highlighting or tokenization features based on regular expressions with capturing groups, leverage the implicit structure of the output array to avoid redundant array lookups.

@@ -63,19 +63,29 @@ interface AnalyzedContentProps {
   onWordClick: (word: string) => void;
 }
 
-const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords, onWordClick }) => {
+const AnalyzedContent: React.FC<AnalyzedContentProps> = React.memo(({ text, highlightWords, onWordClick }) => {
   if (highlightWords.length === 0) {
     return <p className="whitespace-pre-wrap">{text}</p>;
   }
   
-  const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
-  const parts = text.split(regex);
+  const parts = React.useMemo(() => {
+    // ⚡ Bolt: Cache expensive regex creation and string splitting.
+    // By using a capturing group ( ), String.prototype.split will include
+    // the matched separators in the resulting array.
+    // In this specific regex structure: \b(word1|word2)\b
+    // All odd indices (1, 3, 5...) are GUARANTEED to be matched highlighted words.
+    // All even indices (0, 2, 4...) are GUARANTEED to be non-highlighted text.
+    // This allows us to replace an O(N*M) lookup with an O(1) index check.
+    const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
+    return text.split(regex);
+  }, [text, highlightWords]);
 
   return (
     <p className="whitespace-pre-wrap">
       {parts.map((part, index) => {
-        const isHighlight = highlightWords.some(hWord => hWord.toLowerCase() === part.toLowerCase());
-        if (isHighlight) {
+        // ⚡ Bolt: Fast O(1) check instead of highlightWords.some(...)
+        const isHighlight = index % 2 === 1;
+        if (isHighlight && part) {
           return (
             <button key={index} onClick={() => onWordClick(part)} className="bg-yellow-200 hover:bg-yellow-300 text-black font-bold py-1 px-2 rounded-md transition-colors duration-200">
               {part}
@@ -86,7 +96,7 @@ const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords,
       })}
     </p>
   );
-};
+});
 
 
 interface VocabularyListProps {
