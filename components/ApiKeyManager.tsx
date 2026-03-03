@@ -24,10 +24,11 @@ const ApiKeyManager: React.FC<ApiKeyManagerProps> = ({ onApiKeyChange }) => {
       setApiKey(savedKey);
       onApiKeyChange(savedKey);
     } else {
-      // Check if there's an environment API key
-      if (process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY !== 'PLACEHOLDER_API_KEY') {
+      // Check if there's an environment API key safely
+      const envKey = (typeof process !== 'undefined' ? process.env?.GEMINI_API_KEY : undefined) || import.meta.env?.VITE_GEMINI_API_KEY;
+      if (envKey && envKey !== 'PLACEHOLDER_API_KEY') {
         setIsKeySet(true);
-        onApiKeyChange(process.env.GEMINI_API_KEY);
+        onApiKeyChange(envKey);
       } else {
         setIsExpanded(true); // Auto-expand if no key is available
       }

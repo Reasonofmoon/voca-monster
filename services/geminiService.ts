@@ -9,9 +9,15 @@ import {GoogleGenAI, Type} from '@google/genai';
 let ai: GoogleGenAI | null = null;
 const modelName = 'gemini-2.5-flash';
 
+// Safely get env key for both Node and browser environments
+const getEnvApiKey = () => {
+  return (typeof process !== 'undefined' ? process.env?.API_KEY : undefined) || import.meta.env?.VITE_API_KEY;
+};
+
 // Initialize with environment API key if available
-if (process.env.API_KEY && process.env.API_KEY !== 'PLACEHOLDER_API_KEY') {
-  ai = new GoogleGenAI({apiKey: process.env.API_KEY});
+const envKey = getEnvApiKey();
+if (envKey && envKey !== 'PLACEHOLDER_API_KEY') {
+  ai = new GoogleGenAI({apiKey: envKey});
 }
 
 /**
@@ -38,8 +44,9 @@ export function getCurrentApiKey(): string | null {
   }
   
   // Fallback to environment key
-  if (process.env.API_KEY && process.env.API_KEY !== 'PLACEHOLDER_API_KEY') {
-    return process.env.API_KEY;
+  const envKey = getEnvApiKey();
+  if (envKey && envKey !== 'PLACEHOLDER_API_KEY') {
+    return envKey;
   }
   
   return null;

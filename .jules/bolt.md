@@ -1,0 +1,3 @@
+## 2024-03-03 - O(1) React Text Highlighting with split
+**Learning:** When using `String.prototype.split` with a capturing regex group (e.g., `text.split(/(highlightWord)/)`), the resulting array is guaranteed to alternate between non-matches (even indices) and matches (odd indices). Previously, the codebase used an `O(N*M)` `.some()` loop inside the render mapping to check if each part was a highlight word.
+**Action:** Replace `isHighlight = highlightWords.some(...)` checks with `isHighlight = index % 2 === 1` when mapping over an array created by splitting with a capturing regex. This enables `O(1)` match detection and significantly speeds up rendering for large highlighted texts.
