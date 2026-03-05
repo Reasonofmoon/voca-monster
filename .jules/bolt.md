@@ -1,0 +1,3 @@
+## 2025-03-05 - O(1) Identification in Capturing Regex Splits
+**Learning:** When using `String.prototype.split(regex)` with a capturing group in the regex, the resulting array is guaranteed to alternate between non-matched and matched parts. Specifically, all elements at odd indices are the captured matches. This means you don't need an O(N) lookup (like `.some()` against the original word list) for every chunk to determine if it's a match.
+**Action:** Always use index parity (`index % 2 === 1`) to identify matches when iterating over the results of a capturing regex split, turning an O(N*M) highlighting render loop into O(N).
