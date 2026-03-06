@@ -1,0 +1,3 @@
+## 2024-05-15 - Capturing Group Array Indexing for O(1) Checks
+**Learning:** When using `String.prototype.split` with a capturing group Regular Expression, the resulting array places non-matches at even indices and matched capturing groups exactly at odd indices. This guarantees the index inherently carries the matching status.
+**Action:** Instead of iterating through array items and re-verifying if each piece matches the regex using `.some()` (an O(N*M) operation), simply check `index % 2 === 1`. This reduces lookup time to O(1) and eliminates the need for string comparison iterations during rendering.
