@@ -1,0 +1,3 @@
+## 2024-03-07 - [O(1) String Highlighting React Optimization]
+**Learning:** Optimizing highlight checks from O(N) using `.some(...)` on every word piece inside `.map(...)` loop to O(1) logic `index % 2 !== 0`. Utilizing capturing groups in regex effectively guarantees matches to appear at odd indices. Caching splitting and regex construction using `useMemo` avoids processing strings on every re-render. Combining with `React.memo` effectively avoids the entire component re-rendering when parent state changes.
+**Action:** Always consider leveraging regex capture group properties (odd index guarantees matches) instead of manually validating highlighted chunks iteratively, combined with `useMemo` for any form of regex-based split optimizations within React applications.
