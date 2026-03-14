@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { streamDefinition, generateAsciiArt, analyzeTextForVocabulary, generateWorksheetData, setApiKey, AsciiArtData, WorksheetData } from './services/geminiService';
 import ContentDisplay from './components/ContentDisplay';
 import InputArea from './components/SearchBar';
@@ -63,18 +63,25 @@ interface AnalyzedContentProps {
   onWordClick: (word: string) => void;
 }
 
-const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords, onWordClick }) => {
+const AnalyzedContent: React.FC<AnalyzedContentProps> = React.memo(({ text, highlightWords, onWordClick }) => {
+  // ⚡ Bolt: useMemo hook placed before early return to obey Rules of Hooks
+  const parts = useMemo(() => {
+    if (highlightWords.length === 0) return [text];
+
+    // ⚡ Bolt: Cache regex compilation and text splitting.
+    const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
+    return text.split(regex);
+  }, [text, highlightWords]);
+
   if (highlightWords.length === 0) {
     return <p className="whitespace-pre-wrap">{text}</p>;
   }
-  
-  const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
-  const parts = text.split(regex);
 
   return (
     <p className="whitespace-pre-wrap">
       {parts.map((part, index) => {
-        const isHighlight = highlightWords.some(hWord => hWord.toLowerCase() === part.toLowerCase());
+        // ⚡ Bolt: O(1) identification - Capturing regex split guarantees matches are at odd indices
+        const isHighlight = index % 2 === 1;
         if (isHighlight) {
           return (
             <button key={index} onClick={() => onWordClick(part)} className="bg-yellow-200 hover:bg-yellow-300 text-black font-bold py-1 px-2 rounded-md transition-colors duration-200">
@@ -86,7 +93,7 @@ const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords,
       })}
     </p>
   );
-};
+});
 
 
 interface VocabularyListProps {
