@@ -1,0 +1,3 @@
+## 2024-03-20 - [O(1) Match Identification with split]
+**Learning:** Using `String.prototype.split` with a capturing regex guarantees that matches will always appear at odd indices in the resulting array. This allows you to replace O(P * W) array lookups (where P is the number of text parts and W is the number of words to highlight) with an O(1) mathematical index check.
+**Action:** Always utilize the odd-index property of `split` arrays when highlighting regex-matched terms to avoid unnecessary iterations, specifically in the `AnalyzedContent` component and similar string processing scenarios.

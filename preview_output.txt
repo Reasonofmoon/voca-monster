@@ -1,0 +1,6 @@
+
+> darlbit-voca-monster@0.0.0 preview
+> vite preview
+
+  ➜  Local:   http://localhost:4173/voca-monster/
+  ➜  Network: use --host to expose
