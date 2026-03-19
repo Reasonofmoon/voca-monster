@@ -1,0 +1,3 @@
+## 2024-05-24 - String Splitting Performance Trick
+**Learning:** In JavaScript, `String.prototype.split` with a single capturing group regex (e.g., `/(word1|word2)/gi`) inserts the matched separators directly into the resulting array at exactly odd indices (1, 3, 5, ...). The non-matched segments fill the even indices (0, 2, 4, ...).
+**Action:** When mapping over split string fragments to highlight text, replace O(N) `Array.some(match)` lookups with an O(1) index check (`index % 2 === 1`). This is a huge optimization for processing large documents where highlighting might be checked thousands of times per render.
