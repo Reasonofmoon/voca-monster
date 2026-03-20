@@ -1,0 +1,3 @@
+## 2024-03-20 - O(1) Text Highlighting Match Identification
+**Learning:** When using `String.prototype.split` with a regular expression containing a single capturing group, the resulting array alternates between non-matched text (even indices) and captured matches (odd indices). In React text highlighters, this guarantees O(1) match identification (e.g., `index % 2 === 1`) and eliminates the need for expensive O(n) string comparisons like `words.some(w => w.toLowerCase() === part.toLowerCase())` during rendering.
+**Action:** Apply the `index % 2 === 1` pattern for any string-splitting based text highlighting components instead of running array lookups for each parsed segment.
