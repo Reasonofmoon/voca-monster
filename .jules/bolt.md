@@ -1,0 +1,3 @@
+## 2024-03-22 - [App.tsx AnalyzedContent Optimization]
+**Learning:** `AnalyzedContent` component re-renders unnecessarily on parent state changes, and computing the regex `new RegExp(...)` and splitting the text on every render is expensive.
+**Action:** Use `React.memo` to prevent re-renders, and `useMemo` to cache regex construction and text splitting. Note that `React.memo` with generic functional components needs to explicitly use generic arguments on the memo call or type the returned memoized component rather than the variable, but here we can type it via the standard React generic syntax.
