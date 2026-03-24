@@ -1,0 +1,3 @@
+## 2024-05-18 - [O(1) Text Highlighting with Capturing Group Splits]
+**Learning:** [When splitting a string with a RegExp that contains a capturing group (e.g. `/(match)/`), the resulting array interweaves unmatched text and matched text. This guarantees that matches always fall on odd indices, allowing for O(1) identification (`index % 2 === 1`) instead of an O(M) search inside an array mapping iteration.]
+**Action:** [Use the `index % 2 === 1` pattern when rendering highlighted text parts split by capturing groups instead of re-searching the original array, to improve React rendering performance.]
