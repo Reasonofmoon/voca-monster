@@ -1,0 +1,3 @@
+## 2024-03-05 - [App.tsx AnalyzedContent string processing performance optimization]
+**Learning:** `String.prototype.split` with capturing groups allows for an O(1) identifier check since the matches are always located at odd indices of the resulting array. In `AnalyzedContent`, this allowed us to replace a costly `O(N * M)` search operation using `some()` and regex matching on each iteration, greatly improving large block text processing speed.
+**Action:** When needing to map strings after a `split` via a capturing regex, use `index % 2 === 1` to instantly identify matches instead of doing expensive array lookups or regex tests inside the mapping loop.
