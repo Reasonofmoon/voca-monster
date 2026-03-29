@@ -1,0 +1,3 @@
+## 2024-05-24 - [Optimize AnalyzedContent Component]
+**Learning:** `String.prototype.split` with a capturing group regex guarantees that odd indices in the returned array are the captured matched substrings. This behavior allows switching from O(N) array lookups (e.g. `Array.prototype.some()`) to O(1) index checks (`index % 2 === 1`) for highlighting text, resulting in substantial speedups during rendering of long texts.
+**Action:** When working with text highlighting and capturing regex splits in React components, immediately reach for `index % 2 === 1` for O(1) matching instead of running array search functions, and combine with `React.useMemo` to cache regex initialization.
