@@ -1,0 +1,3 @@
+## 2026-03-30 - [O(1) Text Highlighting Lookup using Split Capturing Groups]
+**Learning:** When using `String.prototype.split` with a capturing regular expression, the matched segments are automatically placed at odd indices in the resulting array. This allows replacing an O(N) `Array.prototype.some()` lookup inside a loop with a simple, O(1) index check (`index % 2 === 1`) for identifying highlights.
+**Action:** Use `index % 2 === 1` in mapping components that render text highlighting based on splitting strings via capturing group regex, instead of performing redundant substring or array lookups on every segment.
