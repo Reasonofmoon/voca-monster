@@ -1,0 +1,3 @@
+## 2024-05-24 - [O(1) String Highlighting & Memoization]
+**Learning:** Text highlighting in `AnalyzedContent` uses `String.prototype.split` with a capturing regex. Since capturing groups interleave with non-capturing segments in the output array, odd indices are guaranteed to be matches. This allows O(1) identification instead of O(N) searching an array for every segment. Also, `React.memo` returns a `MemoExoticComponent`, so explicitly typing it as `React.FC<Props>` causes type mismatches.
+**Action:** Use index parity (`index % 2 === 1`) for matching logic when splitting with capturing regexes. Provide the type argument directly to the `React.memo<Props>` call rather than typing the variable as `React.FC`.
