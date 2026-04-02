@@ -1,0 +1,3 @@
+## 2025-01-20 - O(1) Text Highlighting with Capturing Groups
+**Learning:** When using `String.prototype.split()` with a regular expression that contains capturing groups, the resulting array includes the captured matches at odd indices. This allows replacing an $O(M \times N)$ array scan (e.g., `highlightWords.some(...)`) with an $O(1)$ index check (`index % 2 === 1`) when determining if a split part is a match.
+**Action:** Use the `index % 2 === 1` pattern when rendering highlighted text splits from a capturing regex to drastically reduce rendering time, particularly in lists or large paragraphs.
