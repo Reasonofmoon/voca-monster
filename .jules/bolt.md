@@ -1,0 +1,3 @@
+## 2025-04-07 - [O(1) Match Checking using String.split with Capturing Groups]
+**Learning:** When using `String.prototype.split` with a regular expression that includes a capturing group (e.g., `/(pattern)/`), the resulting array intercalates the non-matching text and the matched text. This guarantees that elements at odd indices (1, 3, 5...) are exactly the matched patterns.
+**Action:** Use this property (`index % 2 === 1`) to replace O(N) lookup operations (like `Array.some` or `Array.includes`) when determining if a part of a split string is a highlighted match, reducing the overall complexity of iterating through the split array from O(M * N) to O(M).
