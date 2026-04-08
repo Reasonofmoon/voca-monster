@@ -63,18 +63,27 @@ interface AnalyzedContentProps {
   onWordClick: (word: string) => void;
 }
 
-const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords, onWordClick }) => {
+const AnalyzedContent = React.memo<AnalyzedContentProps>(({ text, highlightWords, onWordClick }) => {
+  // ⚡ Bolt: Memoize regex construction and text splitting to avoid O(N) operations on every render.
+  // Rules of Hooks require useMemo to be called before any early returns.
+  const parts = React.useMemo(() => {
+    if (highlightWords.length === 0) return [text];
+
+    // ⚡ Bolt: Preserve existing regex escaping sequence exactly as it was.
+    const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
+    return text.split(regex);
+  }, [text, highlightWords]);
+
   if (highlightWords.length === 0) {
     return <p className="whitespace-pre-wrap">{text}</p>;
   }
-  
-  const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
-  const parts = text.split(regex);
 
   return (
     <p className="whitespace-pre-wrap">
       {parts.map((part, index) => {
-        const isHighlight = highlightWords.some(hWord => hWord.toLowerCase() === part.toLowerCase());
+        // ⚡ Bolt: O(1) identification. String.prototype.split with a capturing group
+        // places matches at odd indices. Replaces O(N * M) .some() lookup.
+        const isHighlight = index % 2 === 1;
         if (isHighlight) {
           return (
             <button key={index} onClick={() => onWordClick(part)} className="bg-yellow-200 hover:bg-yellow-300 text-black font-bold py-1 px-2 rounded-md transition-colors duration-200">
@@ -86,7 +95,7 @@ const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords,
       })}
     </p>
   );
-};
+});
 
 
 interface VocabularyListProps {
