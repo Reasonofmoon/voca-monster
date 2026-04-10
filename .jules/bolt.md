@@ -1,0 +1,3 @@
+## 2025-04-10 - O(1) identification in text highlighting
+**Learning:** Text highlighting in `AnalyzedContent` uses `String.prototype.split` with a capturing regex. Odd indices in the resulting array are guaranteed to be matches, enabling O(1) identification (e.g., `index % 2 === 1`). This is much faster than running `.some()` on the list of highlight words for every part of the split text. Also, `React.memo` needs to be used to avoid unnecessary re-renders.
+**Action:** Use index % 2 === 1 to identify highlighted parts from `split()` using capturing groups. Ensure `useMemo` is used to cache regex creation and text splitting, and `React.memo` is used to prevent re-renders, especially for components passing strings/arrays.
