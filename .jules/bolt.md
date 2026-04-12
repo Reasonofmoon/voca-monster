@@ -1,0 +1,3 @@
+## 2025-02-28 - [AnalyzedContent Regex and Rendering Optimization]
+**Learning:** [The `AnalyzedContent` component dynamically constructed a regex and iterated over words on every render, which is expensive for large texts. Utilizing `React.useMemo` to cache regex operations and switching from $O(N)$ `.some()` lookup to an $O(1)$ index check (`index % 2 === 1` because `split()` with capturing groups puts matches at odd indices) yields a measurable boost.]
+**Action:** [When rendering lists split by dynamic regex capturing groups, use `React.useMemo` to cache the splits and prefer `index % 2 === 1` to identify matched parts in O(1) time instead of repeated searches.]
