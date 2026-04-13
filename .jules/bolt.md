@@ -1,0 +1,3 @@
+## 2024-04-13 - [AnalyzedContent Render Optimization]
+**Learning:** Wrapping sub-components that receive complex prop processing in `React.memo` coupled with caching internal derivations (like `React.useMemo` for regex mapping and text splitting) and avoiding O(N) array checks per mapped element, heavily mitigates rendering costs for interactive text viewers that get frequently re-rendered.
+**Action:** Always seek to convert O(N) internal iterations in loops (like `Array.prototype.some`) to O(1) checks when working with predictable array structure (e.g. knowing capturing groups place matched segments at odd indices).
