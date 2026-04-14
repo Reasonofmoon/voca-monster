@@ -1,0 +1,3 @@
+## 2024-05-24 - O(1) Match Identification with split()
+**Learning:** When using `String.prototype.split()` with a capturing group in the regex (e.g., `text.split(/(...)/)`), the resulting array is guaranteed to alternate between non-matching and matching segments. Odd indices are always the matched items. This avoids needing an O(N*M) nested loop (like `highlightWords.some()`) to identify matches after the split.
+**Action:** When implementing text highlighting or splitting by an array of keywords, use `index % 2 === 1` inside the mapped array to identify matches in O(1) time instead of iterating over the highlight array again for every chunk.
