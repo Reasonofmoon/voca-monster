@@ -1,0 +1,3 @@
+## 2024-03-24 - [O(1) regex match identification]
+**Learning:** When using `String.prototype.split` with a capturing regex, odd indices in the resulting array are guaranteed to be matches. This enables O(1) identification (`index % 2 === 1`) instead of performing O(M) lookup/some checks for each segment.
+**Action:** Always prefer array index logic instead of `.some()` or `.includes()` when working with regex capturing group splits to significantly boost processing performance on large strings.
