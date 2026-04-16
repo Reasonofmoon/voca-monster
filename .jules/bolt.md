@@ -1,0 +1,3 @@
+## 2024-04-16 - Do not double-escape valid regexes
+**Learning:** When moving a regex that uses escaping `[-\/\\^$*+?.()|[\]{}]` from inline to a memo hook, do not attempt to "fix" the escaping by changing it to `[-\\/\\\\^$*+?.()|[\\]{}]`. This actually introduces a SyntaxError (`Invalid regular expression flags`) and double escapes strings since `\\/` inside a literal is just a backslash and leaves the forward slash unescaped.
+**Action:** Always test the component after refactoring string regex patterns, and when using `replace_with_git_merge_diff`, simply copy the exact regex logic without altering the escape sequences.
