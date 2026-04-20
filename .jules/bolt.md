@@ -1,0 +1,3 @@
+## 2024-05-24 - O(1) Parity Check for Highlight Matching
+**Learning:** In React components that highlight text by splitting on a regex with a capturing group (like `String.prototype.split(regex)`), the resulting array is guaranteed to alternate between non-matching and matching segments. This means `index % 2 === 1` always identifies the highlighted parts.
+**Action:** When replacing $O(N)$ string searches inside render loops (like `.some()`), leverage the parity check from the capturing group for an $O(1)$ lookup, turning an $O(M \times N)$ render into $O(M)$. Ensure the regex correctly escapes variables to maintain the strict alternating parity.
