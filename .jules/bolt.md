@@ -1,0 +1,3 @@
+## 2025-03-01 - [O(1) String Highlighting & TS React.memo Typing]
+**Learning:** Text splitting using `String.prototype.split` with a capturing regex guarantees matches will always fall on odd indices, allowing for an O(1) identification check (`index % 2 === 1`) rather than an O(N) lookup (`highlightWords.some(...)`). Also, `React.memo` creates a `MemoExoticComponent` which can conflict if assigned strictly as `React.FC<Props>`.
+**Action:** Use `index % 2 === 1` for O(1) array identification post-regex split, and type `React.memo` directly with `<Props>` like `React.memo<Props>(...)` rather than typing the const as `React.FC<Props>`.
