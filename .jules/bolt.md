@@ -1,0 +1,3 @@
+## 2025-03-01 - O(N) regex loop optimizations in React rendering
+**Learning:** Found an O(N) substring match via `.some()` inside a `.map()` looping over regex split fragments while highlighting words. Creating Regex objects on every render pass is also unnecessarily expensive.
+**Action:** When a capturing group is used in `String.prototype.split()`, the odd-indexed elements are guaranteed to be the captured matches. You can eliminate the O(N) array search inside the map loop entirely by replacing it with an O(1) index parity check (`index % 2 === 1`). Additionally, text splitting and Regex compilation inside React functional components should be memoized with `React.useMemo`.
