@@ -1,0 +1,3 @@
+## 2025-04-25 - [O(1) Regex Split Index Verification]
+**Learning:** In JavaScript, when calling `String.prototype.split()` using a Regular Expression that contains a *single capturing group* (e.g., `/(word)/`), the matched captures are cleanly spliced directly into the resulting array at exactly the odd indices (1, 3, 5...).
+**Action:** Always replace `Array.prototype.some()` lookups inside the map function after a split with an `O(1)` index check (`index % 2 === 1`), effectively optimizing `O(N)` linear searches out of rendering loops without adding lookup table overhead.
