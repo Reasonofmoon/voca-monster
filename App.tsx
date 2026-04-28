@@ -63,30 +63,35 @@ interface AnalyzedContentProps {
   onWordClick: (word: string) => void;
 }
 
-const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords, onWordClick }) => {
+// ⚡ Bolt: Memoize component to prevent re-renders, cache regex/splitting, and use O(1) highlight checking
+const AnalyzedContent = React.memo<AnalyzedContentProps>(({ text, highlightWords, onWordClick }) => {
+  const parts = React.useMemo(() => {
+    if (highlightWords.length === 0) return [text];
+    const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
+    return text.split(regex);
+  }, [text, highlightWords]);
+
   if (highlightWords.length === 0) {
     return <p className="whitespace-pre-wrap">{text}</p>;
   }
-  
-  const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
-  const parts = text.split(regex);
 
   return (
     <p className="whitespace-pre-wrap">
       {parts.map((part, index) => {
-        const isHighlight = highlightWords.some(hWord => hWord.toLowerCase() === part.toLowerCase());
-        if (isHighlight) {
+        // ⚡ Bolt: O(1) identification since odd indices from split with capturing group are guaranteed to be matches
+        const isHighlight = index % 2 === 1;
+        if (isHighlight && part) {
           return (
             <button key={index} onClick={() => onWordClick(part)} className="bg-yellow-200 hover:bg-yellow-300 text-black font-bold py-1 px-2 rounded-md transition-colors duration-200">
               {part}
             </button>
           );
         }
-        return <React.Fragment key={index}>{part}</React.Fragment>;
+        return part ? <React.Fragment key={index}>{part}</React.Fragment> : null;
       })}
     </p>
   );
-};
+});
 
 
 interface VocabularyListProps {
