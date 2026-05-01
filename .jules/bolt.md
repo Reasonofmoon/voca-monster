@@ -1,0 +1,3 @@
+## 2026-05-01 - O(1) String Highlighting Lookups
+**Learning:** When using `String.prototype.split()` with a regular expression containing a capturing group, the matched capture groups are guaranteed to be placed at the odd indices of the resulting array. This means operations that search for matches in the split results (like highlighting text in React) can use an O(1) index check (`index % 2 === 1`) instead of expensive O(n) string comparisons like `Array.some()`.
+**Action:** Always prefer mathematical index checks over iterative string lookups when processing text split by capture-group regular expressions in rendering loops.
