@@ -1,0 +1,3 @@
+## 2024-05-02 - O(1) Regex Capture Highlighting
+**Learning:** In React components that highlight substrings using `text.split(regex)`, wrapping the capturing group in the RegExp `(pattern)` causes the resulting `.split()` array to always output the matched strings at odd indices. This allows replacing an O(N*M) nested array `.some()` lookup with an O(1) modulo index check (`index % 2 === 1`).
+**Action:** When optimizing text-highlighting components, look for `.split()` with capturing regexes and simplify the highlight condition to use odd index checks, which drastically reduces string comparisons during render.
