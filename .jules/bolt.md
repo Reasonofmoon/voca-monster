@@ -1,0 +1,3 @@
+## 2024-05-03 - O(1) Regex Split Identification
+**Learning:** `String.prototype.split` with a single capture group (e.g., `text.split(/(match)/)`) guarantees that all odd-indexed elements in the resulting array are the captured matches, while even-indexed elements are the non-matched segments. This mathematical property allows identifying matches in `O(1)` time (using `index % 2 === 1`) instead of performing `O(N*M)` string lookups with `.some()`.
+**Action:** Always prefer mathematical index checks over string comparisons when iterating through results of a capturing regex split in React render loops.
