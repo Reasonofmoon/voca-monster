@@ -1,0 +1,3 @@
+## 2024-05-04 - O(1) Highlighting Optimization in AnalyzedContent
+**Learning:** When using `String.prototype.split` with a Regex containing exactly one capture group, the resulting array perfectly interleaves non-matched text with matched text.
+**Action:** Instead of iterating over the target words list on every rendered word (O(M) complexity) to verify if a word needs highlighting, check if the index is odd (`index % 2 === 1`) for an O(1) operation. This, combined with `React.memo` and `useMemo` for the initial text splitting, massively reduces the component's render overhead during typing and initialization.
