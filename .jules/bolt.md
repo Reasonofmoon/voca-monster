@@ -1,0 +1,3 @@
+## 2024-05-05 - O(1) String Splitting with Regex Capturing Groups
+**Learning:** In Javascript, when splitting strings using `String.prototype.split` with a single Regex capture group, the matches strictly populate the output array at odd indices. This allows for replacing an expensive O(N * M) nested lookup algorithm inside a React mapping loop with a highly optimized O(1) `index % 2 === 1` check.
+**Action:** When iterating over regex-split text fragments in React to apply highlight components, bypass `Array.prototype.some/find` lookups against a dictionary, and directly leverage the odd index guarantee from the split execution.
