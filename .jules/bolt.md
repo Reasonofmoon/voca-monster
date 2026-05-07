@@ -1,0 +1,3 @@
+## 2024-05-07 - Optimize Regex String Highlighting in React
+**Learning:** When using `String.prototype.split` with a capturing group `( ... )`, the resulting array alternates between unmatched and matched segments. This means matches are guaranteed to be at odd indices (1, 3, 5...). Checking `index % 2 === 1` provides O(1) identification of highlighted words, completely avoiding the O(N) `.some` iteration previously used.
+**Action:** Use this odd-index mathematical property anytime you split text with a capturing regex to find highlighted or tokenized parts instead of redundantly re-searching the array.
