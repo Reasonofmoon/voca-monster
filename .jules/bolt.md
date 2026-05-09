@@ -1,0 +1,3 @@
+## 2025-05-09 - O(1) Array Check Using split() Capturing Groups
+**Learning:** When using `String.prototype.split()` with a regular expression containing a capturing group, the matched elements are always placed at odd indices in the resulting array.
+**Action:** Leverage this specification property to replace expensive nested array searches (like `.some()` or `.includes()`) inside `.map()` loops with a simple O(1) index check (`index % 2 === 1`) when rebuilding strings with React components.
