@@ -1,0 +1,3 @@
+## 2024-05-11 - [O(1) Array Matching using split()]
+**Learning:** [When splitting a string using a capturing group regular expression, `String.prototype.split()` guarantees that all matched substrings are placed at odd indices in the resulting array. This allows for O(1) identification of matches during mapping, avoiding O(N) array searches like `.some()` or `.includes()`.]
+**Action:** [When rendering matched substrings from text in React using `text.split(capturingRegex)`, directly map using `index % 2 === 1` to identify matches instead of searching through a separate array of matching terms.]
