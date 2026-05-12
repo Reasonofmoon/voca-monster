@@ -1,0 +1,3 @@
+## 2024-05-12 - [O(1) Pattern for Capturing Group Split Lookup]
+**Learning:** When using `String.prototype.split` with a capturing group regex (e.g., `text.split(/(match)/)`), the resulting array alternates between non-matching and matching segments. This means matches are guaranteed to be at odd indices. Previous implementations used an O(N) array `.some()` lookup inside the `.map()` to verify if a segment was a highlighted match, resulting in an O(N^2) complexity over all words.
+**Action:** Replace the inner O(N) `.some()` array scan with an O(1) index parity check (`const isHighlight = index % 2 === 1;`). This drastically improves rendering performance of highlighted text components like `AnalyzedContent`.
