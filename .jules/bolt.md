@@ -1,0 +1,3 @@
+## 2024-05-24 - [O(1) String Highlighting via Capturing Regex]
+**Learning:** When splitting a string with a regex containing a capturing group (e.g., `text.split(/(match)/)`), the resulting array reliably places the matches at odd indices (1, 3, 5...). The previous code was using `Array.some()` on every element to check if it was a match, resulting in unnecessary iteration.
+**Action:** Use `index % 2 === 1` for O(1) identification of matched groups during mapping/rendering instead of comparing the string content again against the list of targets.
