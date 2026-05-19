@@ -1,0 +1,4 @@
+
+## 2024-05-19 - [O(1) Identification for Splitting with Capturing Groups]
+**Learning:** In the `AnalyzedContent` component, a performance bottleneck existed where a map iteration over a split text array required calling `.some()` to check if the current string matched any item in a `highlightWords` array, resulting in O(N*M) time complexity. However, because `String.prototype.split()` using a capturing group (e.g., `/(pattern)/`) guarantees that matched patterns are injected into the resulting array precisely at odd indices, the costly array search can be entirely replaced by checking `index % 2 === 1`.
+**Action:** When identifying matches within the resulting array of a string split by a capturing regex, use index parity checks (e.g. `index % 2 === 1`) for an immediate O(1) identification instead of string comparisons or array lookups.
