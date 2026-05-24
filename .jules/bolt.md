@@ -1,0 +1,3 @@
+## 2026-05-24 - [O(1) String Splitting Optimization]
+**Learning:** [When using `String.prototype.split` with a single capturing group regex in JavaScript/TypeScript, the resulting array is strictly formatted such that the matched separators always appear at odd indices. Iterating over this array and performing `.some()` on a vocabulary list is an expensive O(N*M) operation that can be replaced entirely.]
+**Action:** [When rendering split text with capturing groups, use `index % 2 === 1` for an instantaneous O(1) identification of the matched segments, eliminating the need to search the source array again.]
