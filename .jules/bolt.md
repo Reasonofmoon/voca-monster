@@ -1,0 +1,3 @@
+## 2025-05-25 - [React.memo Types and Regex O(1) Check]
+**Learning:** When using `String.prototype.split` with a capturing regex, odd indices correspond to the capturing group matches. Instead of doing an O(N) `.some()` lookup to find highlighted words, `index % 2 === 1` offers an O(1) mathematical check. `React.memo` needs careful typing and `React.FC` is incompatible.
+**Action:** Always provide type params directly to the `React.memo` call instead of assigning explicitly to `React.FC` (e.g. `const Comp = React.memo<Props>(...)`). Leverage mathematical regex splitting properties for performance.
