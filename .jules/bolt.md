@@ -1,0 +1,3 @@
+## 2025-05-18 - Optimize Array Search in Highlight Logic
+**Learning:** Found that the text highlighter within `AnalyzedContent` dynamically creates regular expressions and checks every segment against `highlightWords` using `Array.some()` inside the `map` callback. Because `String.prototype.split(regex)` with a capturing group alternates text and matches, odd indices are mathematically guaranteed to be the exact regex matches.
+**Action:** Replace `Array.some(...)` loops in text parsing with an `index % 2 === 1` check whenever capturing groups are used with `.split()`. Additionally, ensure dynamically built Regex processing inside components is wrapped in `useMemo` to prevent rebuilding on every re-render.
