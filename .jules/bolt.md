@@ -1,0 +1,3 @@
+## 2024-05-29 - [Optimized React.memo with inline O(1) matching]
+**Learning:** `text.split` with a capturing regex (e.g., `/(word1|word2)/gi`) creates an array where matches always appear at odd indices. Additionally, wrapping a functional component inline with `React.memo` (i.e. `React.memo<Props>((...) => ...)` instead of typing the variable as `React.FC<Props>`) correctly maps the prop types without causing a `MemoExoticComponent` type mismatch.
+**Action:** Use this odd-index property of regex split arrays to skip `Array.prototype.some` searches when highlighting text, yielding an O(1) complexity lookup instead of O(N). Also correctly type `React.memo` components.
