@@ -1,0 +1,3 @@
+## 2025-03-01 - [O(1) Array matching with capture groups]
+**Learning:** By utilizing Javascript's `String.prototype.split` with a regex containing a capture group, we guarantee the matched segments of a string occur at odd indices in the resulting array. This allows transforming an O(N) lookup (`highlightWords.some(...)`) into an O(1) mathematical check (`index % 2 === 1`).
+**Action:** When designing or refactoring highlight/search systems in React components, avoid iterating over the words for each split part. Use capture groups and odd-index detection for immediate lookup.
