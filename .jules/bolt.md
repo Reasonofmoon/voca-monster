@@ -1,0 +1,3 @@
+## 2025-03-01 - [O(1) Identification of Matches using Capturing Regex]
+**Learning:** String.prototype.split with a capturing regex splits text into parts where odd indices are guaranteed to be the matched captures. This allows for replacing O(N*M) array searches with an O(1) index check (`index % 2 === 1`).
+**Action:** When mapping over string fragments created by `split` with capturing groups, leverage the odd/even index pattern to determine if a fragment is a match rather than re-evaluating each fragment against the search criteria.
