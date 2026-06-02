@@ -1,0 +1,3 @@
+## 2024-06-02 - [AnalyzedContent Lookup Optimization & React.memo Formatting]
+**Learning:** Text highlighting logic mapping over a `split(regex)` array where the regex has a capturing group places matches predictably at odd indices, allowing for an O(1) modulo check instead of an O(N) `.some()` iteration inside the map. Also, when wrapping a component with `React.memo` in TypeScript, explicitly typing it as `const AnalyzedContent = React.memo<Props>(...)` avoids type mismatch errors from explicitly casting it as `React.FC<Props>`.
+**Action:** Exploit inherent capturing group structural guarantees in arrays to skip iteration during regex token processing, and properly inject types directly to `React.memo` calls rather than typing the variable as `React.FC`.
