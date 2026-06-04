@@ -1,0 +1,3 @@
+## 2025-06-04 - [Regex Split Parity for Highlight High-Performance Matching]
+**Learning:** When using `String.prototype.split()` with a capturing group regex (e.g., `/(word1|word2)/gi`), the resulting array consistently places the captured matches at odd indices and the surrounding text at even indices. Previously, `AnalyzedContent` iterated over this array and used an O(M*N) array search (`highlightWords.some(...)`) on every part to determine if it was a match.
+**Action:** Replace the expensive `some()` array search with a simple O(1) index parity check (`index % 2 === 1`). This is fundamentally faster and safely bypasses redundant string comparisons for components rendering highlighted dynamic text. Always combine this with `useMemo` for the split logic itself.
