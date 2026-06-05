@@ -1,0 +1,3 @@
+## 2024-05-18 - [Optimizing Regex Split Array Lookups]
+**Learning:** When using `String.prototype.split` with a capturing group regex (e.g., `/(\b(?:word1|word2)\b)/gi`), the resulting array interweaves unmatched parts and matched groups. The odd indices (1, 3, 5, etc.) are guaranteed to be the exact matches from the capturing group.
+**Action:** Replace O(N) array lookups (like `some` or `includes`) inside `.map` with a simple O(1) index check (`index % 2 === 1`) to determine if a part is a matched highlight, significantly reducing computational complexity during rendering, especially for large texts and highlight arrays.
