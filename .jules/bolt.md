@@ -1,0 +1,3 @@
+## 2024-05-20 - [O(1) String Indexing in Capturing Splits]
+**Learning:** When using `String.prototype.split` with a capturing regex group (e.g., `/(pattern)/`), the resulting array consistently interleaves non-matching string segments with the captured matches. Specifically, matches always fall on odd indices (1, 3, 5...), enabling O(1) identification checks like `index % 2 === 1` instead of running O(N) array lookups (like `.some()`) for every word fragment.
+**Action:** Always prefer O(1) index mathematics over iterative array checks when mapping over strings split by capturing regular expressions.
