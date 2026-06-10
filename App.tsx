@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { streamDefinition, generateAsciiArt, analyzeTextForVocabulary, generateWorksheetData, setApiKey, AsciiArtData, WorksheetData } from './services/geminiService';
 import ContentDisplay from './components/ContentDisplay';
 import InputArea from './components/SearchBar';
@@ -63,18 +63,27 @@ interface AnalyzedContentProps {
   onWordClick: (word: string) => void;
 }
 
-const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords, onWordClick }) => {
+const AnalyzedContent = React.memo<AnalyzedContentProps>(({ text, highlightWords, onWordClick }) => {
+  const parts = useMemo(() => {
+    if (highlightWords.length === 0) {
+      return [text];
+    }
+    const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
+    return text.split(regex);
+  }, [text, highlightWords]);
+
   if (highlightWords.length === 0) {
     return <p className="whitespace-pre-wrap">{text}</p>;
   }
-  
-  const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
-  const parts = text.split(regex);
 
   return (
     <p className="whitespace-pre-wrap">
       {parts.map((part, index) => {
-        const isHighlight = highlightWords.some(hWord => hWord.toLowerCase() === part.toLowerCase());
+        // Because text.split() is used with a regex containing a single capturing group `( ... )`,
+        // the resulting array naturally alternates: [non-matched text, matched group, non-matched text, ...]
+        // This guarantees that elements at odd indices (1, 3, 5, ...) are exact regex matches.
+        // Therefore, we can reliably identify highlighted words in O(1) time simply by checking if `index % 2 === 1`.
+        const isHighlight = index % 2 === 1;
         if (isHighlight) {
           return (
             <button key={index} onClick={() => onWordClick(part)} className="bg-yellow-200 hover:bg-yellow-300 text-black font-bold py-1 px-2 rounded-md transition-colors duration-200">
@@ -86,7 +95,10 @@ const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords,
       })}
     </p>
   );
-};
+});
+// ⚡ Bolt: Added React.memo to prevent re-renders when parent state changes.
+// ⚡ Bolt: Added useMemo to cache regex compilation and text splitting operations.
+// ⚡ Bolt: Optimized string matching from O(N*M) Array.some() to O(1) index check (index % 2 === 1).
 
 
 interface VocabularyListProps {
