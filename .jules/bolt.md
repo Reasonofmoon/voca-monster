@@ -1,0 +1,3 @@
+## 2024-06-15 - React Component String Split Optimization
+**Learning:** In React components that perform string highlighting (like `AnalyzedContent` in this codebase), utilizing the native behavior of `String.prototype.split` with a capturing regex group allows for an $O(1)$ identification check (`index % 2 === 1`) instead of an $O(N \times M)$ nested loop (`.some` and `.toLowerCase()`).
+**Action:** Always check string highlighting components for nested array lookups during the render phase and refactor them to use the capturing split index strategy combined with `React.useMemo` for regex generation to eliminate rendering bottlenecks.
