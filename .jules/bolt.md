@@ -1,0 +1,3 @@
+## 2026-06-16 - [Optimize Text Highlighting Component]
+**Learning:** In React components performing text splitting and highlighting using regex, recreating the regex and `.split()` array every render is an expensive O(N) operation. Additionally, performing an `.some()` array lookup inside the mapped components is an O(N^2) total cost.
+**Action:** When working with text highlighting using regex capturing groups, use `React.useMemo` to cache the regex construction and the resulting split array. Since splitting by a single capturing group mathematically guarantees that odd indices will be the matched strings, the O(N) array lookup inside the mapping loop can be replaced with an O(1) `index % 2 === 1` modulo check.
