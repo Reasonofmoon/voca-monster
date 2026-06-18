@@ -1,0 +1,3 @@
+## 2024-06-18 - Memoize string parsing in AnalyzedContent
+**Learning:** `App.tsx` has a tight loop in `AnalyzedContent` where capturing group regex generation `text.split` runs continuously across parent state changes, re-building a dynamic regex per render.
+**Action:** Used `React.memo` and `React.useMemo` to cache regex construction and result text chunking, and replaced a linear search O(N) Array.some() check with O(1) identification by verifying odd indices via modulo arithmetic.
