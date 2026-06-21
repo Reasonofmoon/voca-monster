@@ -1,0 +1,3 @@
+## 2025-03-05 - O(1) Substring Matching via Regex Capturing Groups
+**Learning:** In React components that highlight substrings (like `AnalyzedContent`), replacing an inner loop `O(N*M)` substring inclusion check (`highlightWords.some(...)`) with an `O(1)` index parity check (`index % 2 === 1`) drastically improves performance. This works safely because `String.prototype.split()` with a single capturing group regex reliably places the matched substrings exactly at odd indices of the resulting array.
+**Action:** When optimizing text highlighting algorithms or tokenization routines, leverage capturing group behavior in `.split()` to determine match state by index rather than re-evaluating the token against the highlight list.
