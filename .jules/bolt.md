@@ -1,0 +1,3 @@
+## 2025-06-25 - React.memo and O(1) identification in AnalyzedContent
+**Learning:** `React.memo` with `useMemo` can significantly boost text-processing components where regex and string splitting re-run excessively due to parent state updates. Odd indices in regex capturing group splits are guaranteed match hits, allowing for immediate O(1) identification and eliminating costly array sweeps (`.some()` on potentially hundreds of tokens).
+**Action:** Always identify O(1) evaluation strategies (like `index % 2 === 1`) in split capturing-group patterns instead of re-iterating over large token arrays inside render loops.
