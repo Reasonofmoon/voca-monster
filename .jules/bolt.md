@@ -1,0 +1,3 @@
+## 2024-06-29 - O(1) Capturing Group Identification
+**Learning:** When using `String.prototype.split` with a capturing regular expression, the matched segments are interspersed in the returned array. Specifically, the segments at odd indices are always the matched capture groups, while even indices are the non-matched surrounding text.
+**Action:** When mapping over the result of `text.split(regexWithCaptureGroup)` in React to highlight words, replace `O(N)` `.some()` searches over the highlight array with a simple `O(1)` check `index % 2 === 1` to instantly determine if the segment is a match.

@@ -63,19 +63,34 @@ interface AnalyzedContentProps {
   onWordClick: (word: string) => void;
 }
 
-const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords, onWordClick }) => {
-  if (highlightWords.length === 0) {
+const AnalyzedContent = React.memo<AnalyzedContentProps>(({ text, highlightWords, onWordClick }) => {
+  // ⚡ Bolt: Cache regex compilation to prevent recreating on every render
+  const { regex, isEnabled } = React.useMemo(() => {
+    if (highlightWords.length === 0) {
+      return { regex: null, isEnabled: false };
+    }
+    return {
+      regex: new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi'),
+      isEnabled: true
+    };
+  }, [highlightWords]);
+
+  // ⚡ Bolt: Cache split results
+  const parts = React.useMemo(() => {
+    if (!isEnabled || !regex) return [text];
+    return text.split(regex);
+  }, [text, regex, isEnabled]);
+
+  if (!isEnabled) {
     return <p className="whitespace-pre-wrap">{text}</p>;
   }
-  
-  const regex = new RegExp(`\\b(${highlightWords.map(w => w.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')).join('|')})\\b`, 'gi');
-  const parts = text.split(regex);
 
   return (
     <p className="whitespace-pre-wrap">
       {parts.map((part, index) => {
-        const isHighlight = highlightWords.some(hWord => hWord.toLowerCase() === part.toLowerCase());
-        if (isHighlight) {
+        // ⚡ Bolt: Optimized O(1) matching. Since String.prototype.split uses a capturing group,
+        // odd indices in the resulting array are guaranteed to be the matches.
+        if (index % 2 === 1) {
           return (
             <button key={index} onClick={() => onWordClick(part)} className="bg-yellow-200 hover:bg-yellow-300 text-black font-bold py-1 px-2 rounded-md transition-colors duration-200">
               {part}
@@ -86,7 +101,7 @@ const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords,
       })}
     </p>
   );
-};
+});
 
 
 interface VocabularyListProps {
