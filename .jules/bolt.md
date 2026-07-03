@@ -1,0 +1,3 @@
+## 2025-03-05 - [O(1) Identification of regex matches in text splitting]
+**Learning:** When using `String.prototype.split` with a capturing group regex to highlight text, the matches are always placed at odd indices in the resulting array. This allows for O(1) identification using `index % 2 === 1`. Previously, it was doing an O(N) lookup (`Array.some()`) against the list of target words for every resulting text chunk, which caused performance degradation on large generated articles.
+**Action:** When implementing text highlighters or text substitution based on regex splits with capturing groups, use the odd index property instead of searching through the list of targeted matches.
