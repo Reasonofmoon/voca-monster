@@ -1,0 +1,3 @@
+## 2025-07-04 - [Optimize Regex and Array Processing in AnalyzedContent]
+**Learning:** String splitting with a regex containing capturing groups always outputs the matched string (the split delimiter) at odd indices in the resulting array. This allows transforming an O(N * M) `.some()` lookup across highlighted words into an O(1) mathematical check (`index % 2 === 1`). Additionally, missing `React.memo` and `useMemo` hooks on frequently-recalculated strings caused unnecessary render cycles.
+**Action:** Use `React.memo` combined with `useMemo` to cache regex construction. Leverage capturing group output behavior (`index % 2 === 1`) to eliminate costly iterative array searches in mapping loops.
