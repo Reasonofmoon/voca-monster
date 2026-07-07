@@ -1,0 +1,3 @@
+## 2025-03-07 - [Optimizing Text Highlighting with regex capturing groups]
+**Learning:** React re-renders can be slow when processing text splits using complex dynamic regular expressions. The `AnalyzedContent` component was reconstructing its regular expression and iterating string splits every render, further exacerbated by an O(N) array search `some()` for every fragment created.
+**Action:** Use `React.memo` to stop rendering when parent state (like checkboxes) changes. Use `useMemo` to cache regex construction and result splitting. Refactor `.some()` into O(1) by leveraging `String.prototype.split` with a regex capturing group behavior—where odd indices are guaranteed to be the match.
