@@ -1,0 +1,3 @@
+## 2024-07-08 - [AnalyzedContent Component Re-renders]
+**Learning:** Found that string processing and regex compilation logic inside `AnalyzedContent` component runs on every render of parent `App.tsx` because of missing memoization for computation and component props. Odd indexes logic could also simplify the word highlighting by mapping regex captured groups.
+**Action:** Use `React.memo` to wrap the `AnalyzedContent` component and `useMemo` for creating the regex and parts array. And use `index % 2 === 1` for guaranteed regex matches.
