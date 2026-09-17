@@ -1,0 +1,3 @@
+## 2024-09-17 - Optimize String Split Highlight Lookup
+**Learning:** `AnalyzedContent` uses `String.prototype.split` with a capturing regex to find highlighted words. Odd indices in the resulting array are guaranteed to be matches, enabling O(1) identification (`index % 2 === 1`), rather than using `Array.prototype.some` for O(n*m) lookup.
+**Action:** Use the odd-index guaranteed match behavior for capturing regex splits whenever iterating over the split output to identify matched segments.
