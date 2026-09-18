@@ -1,0 +1,3 @@
+## 2024-05-24 - [O(1) Match Identification in Regex Splitting & Memoization]
+**Learning:** When using `String.prototype.split` with a capturing regex, odd indices in the resulting array are guaranteed to be the matches. In `AnalyzedContent`, the app was mapping over the split array and for *every part* checking if it existed in the `highlightWords` array using `Array.some(w => w.toLowerCase() === part.toLowerCase())`, which results in an O(N*M) lookup.
+**Action:** Use O(1) identification by checking if `index % 2 === 1`. Also, use `React.memo<Props>` for pure functional components like `AnalyzedContent` and `VocabularyList` to prevent unnecessary re-renders when parent state changes.
