@@ -1,0 +1,3 @@
+## 2024-06-25 - [O(1) String Highlighting Lookups in React Components]
+**Learning:** When using `String.prototype.split` with a global regex containing a capturing group, the browser guarantees that capturing group matches are placed exactly at odd indices in the returned array. Previously, the `AnalyzedContent` component used an O(N * M) lookup (`highlightWords.some(...)`) across thousands of substrings on every render.
+**Action:** Always replace O(N * M) subset lookups on split strings with an O(1) `index % 2 === 1` check when building text highlighters. Pair this with `React.memo` to eliminate performance bottlenecks during rapid re-renders.

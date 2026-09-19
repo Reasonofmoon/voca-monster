@@ -63,7 +63,7 @@ interface AnalyzedContentProps {
   onWordClick: (word: string) => void;
 }
 
-const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords, onWordClick }) => {
+const AnalyzedContent = React.memo<AnalyzedContentProps>(({ text, highlightWords, onWordClick }) => {
   if (highlightWords.length === 0) {
     return <p className="whitespace-pre-wrap">{text}</p>;
   }
@@ -74,7 +74,9 @@ const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords,
   return (
     <p className="whitespace-pre-wrap">
       {parts.map((part, index) => {
-        const isHighlight = highlightWords.some(hWord => hWord.toLowerCase() === part.toLowerCase());
+        // ⚡ Bolt: O(1) capture group lookup. `split` with capturing groups guarantees matches are at odd indices.
+        // This avoids O(N * M) performance impact of calling `highlightWords.some(...)` on every substring.
+        const isHighlight = index % 2 === 1;
         if (isHighlight) {
           return (
             <button key={index} onClick={() => onWordClick(part)} className="bg-yellow-200 hover:bg-yellow-300 text-black font-bold py-1 px-2 rounded-md transition-colors duration-200">
@@ -86,7 +88,7 @@ const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords,
       })}
     </p>
   );
-};
+});
 
 
 interface VocabularyListProps {
