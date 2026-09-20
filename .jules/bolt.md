@@ -1,0 +1,3 @@
+## 2025-03-04 - [Regex Splitting Optimization]
+**Learning:** In the AnalyzedContent component, the original implementation used an O(N) Array.some() call inside a map to identify highlighted vocabulary words from a regex split operation.
+**Action:** Replaced the O(N) lookup with an O(1) modulo check. Since String.prototype.split with a capturing group regex guarantees odd indices contain the matched items, we can simply use `index % 2 === 1` to instantly identify highlighted words. Wrapped the component in React.memo() to prevent unnecessary re-renders.
