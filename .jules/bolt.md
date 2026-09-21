@@ -1,0 +1,3 @@
+## 2025-02-28 - [Text Highlighting O(1) Optimization]
+**Learning:** When using `String.prototype.split` with a capturing regex (e.g. `/(match1|match2)/`), the resulting array consistently alternates between non-matching and matching segments. This means all items at odd indices (1, 3, 5...) are definitively the matching substrings, eliminating the need to re-scan or loop through an array to identify which words matched.
+**Action:** Replace `Array.prototype.some` or other `O(n)` lookup operations inside the mapped parts array with a simple parity check `index % 2 === 1` for O(1) performance during text rendering operations.
