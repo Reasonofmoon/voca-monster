@@ -74,7 +74,11 @@ const AnalyzedContent: React.FC<AnalyzedContentProps> = ({ text, highlightWords,
   return (
     <p className="whitespace-pre-wrap">
       {parts.map((part, index) => {
-        const isHighlight = highlightWords.some(hWord => hWord.toLowerCase() === part.toLowerCase());
+        // ⚡ Bolt: O(1) highlight check
+        // Because text.split() is used with a capturing group `( ... )`,
+        // the resulting array always alternates between text and matches.
+        // Therefore, matches are always at odd indices (1, 3, 5, etc).
+        const isHighlight = index % 2 === 1;
         if (isHighlight) {
           return (
             <button key={index} onClick={() => onWordClick(part)} className="bg-yellow-200 hover:bg-yellow-300 text-black font-bold py-1 px-2 rounded-md transition-colors duration-200">
