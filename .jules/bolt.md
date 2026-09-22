@@ -1,0 +1,3 @@
+## 2024-05-14 - O(1) identification in regex split
+**Learning:** Text highlighting that uses `String.prototype.split` with a capturing regex guarantees that odd indices in the resulting array are matches. This allows replacing O(N) array lookups (e.g. `highlightWords.some(...)`) with an O(1) index check (`index % 2 === 1`).
+**Action:** When implementing text highlighters with capturing regex splits, always use `index % 2 === 1` to identify matched parts instead of re-verifying matches against the target list.
